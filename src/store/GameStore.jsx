@@ -40,11 +40,23 @@ export const useGameStore = create((set) => ({
         // if game room is empty, delete room 
         localStorage.removeItem('roomCode'), 
         useGetUserData.getState().inLobby = false
+        // make call to backend to remove user from room
         
     ),
     setLobbyList: (lobbyList) => set({lobbies: lobbyList}),
-    findLobby: async (code) => {
+    findLobby: async (code, user) => {
         console.log(code)
+        const { data } = await axios({
+            method: 'PATCH',
+            url: `http://127.0.0.1:8000/game/get-lobby/${code}/`,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: {
+                player: user
+            }
+        })
+        return data
     }
     //kickPlayer: (user) => set((state)),
 

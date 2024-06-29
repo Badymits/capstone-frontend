@@ -34,7 +34,7 @@ const GameRoom = () => {
       },
       
     }).then((res) => {
-      console.log(res.data.players)
+      console.log(res.data.players) // exclude password field in backend
       setPlayers(res.data.players)
     }).catch((err) => {
       alert(err)

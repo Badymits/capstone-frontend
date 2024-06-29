@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react"
 import { Outlet, useNavigate } from "react-router-dom"  
-//import useGetUserData from "../store/UserStore"
+import useGetUserData from "../store/UserStore"
 import { useGameStore } from "../store/GameStore"
 import axios from "axios"
 
 const Playpage = () => {
 
-  //const getUser = useGetUserData()
+  const getUser = useGetUserData((state) => (state.user))
   const navigate = useNavigate()
 
   // var and action from game store
@@ -60,8 +60,19 @@ const Playpage = () => {
   
   const stateChangeHandler = async (e) => {
     e.preventDefault();
-    
-    findLobby(roomCode)
+    console.log('code: ', roomCode)
+    let data = findLobby(roomCode, getUser)
+    data.then((res) => {
+      console.log(res.lobby_code)
+
+      localStorage.setItem('roomCode', res.lobby_code)
+      navigate(`/play/${res.lobby_code}/`)
+      
+    }).catch((err) => {
+      console.error(err)
+      alert('Error occurred, cannot join room')
+    })
+
   }
 
   return (

@@ -4,9 +4,9 @@ import useGetUserData from '../store/UserStore'
 
 const PrivateRoute = () => {
 
-  const getUser = useGetUserData();
+  const getUser = useGetUserData((state) => (state.user));
 
-  return getUser.userToken ? <Outlet /> : <Navigate to='/login'/>
+  return getUser ? <Outlet /> : <Navigate to='/login'/>
 }
 
 export default PrivateRoute
